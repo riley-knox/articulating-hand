@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<robot name="hand_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!-- segment/joint creation macro file -->
+    <xacro:include filename="$(find articulating_hand)/model/links_and_joints.xacro"/>
+
+<!-- geometric parameters -->
+    <xacro:property name="props" value="${load_yaml('$(find articulating_hand)/model/hand.yaml')}"/>
+    <xacro:property name="palm_width" value="${props['palm_width']}"/>
+    <xacro:property name="palm_height" value="${props['palm_height']}"/>
+    <xacro:property name="finger_segment_length" value="${props['finger_segment_length']}"/>
+    <xacro:property name="finger_segment_width" value="${props['finger_segment_width']}"/>
+    <xacro:property name="thickness" value="${props['thickness']}"/>
+    <xacro:property name="cmc_length" value="${props['cmc_length']}"/>
+    <xacro:property name="cmc_width" value="${props['cmc_width']}"/>
+    <xacro:property name="cmc_thickness" value="${props['cmc_thickness']}"/>
+    <xacro:property name="thumb_prox_length" value="${props['thumb_prox_length']}"/>
+
+<!-- segment colors -->
+    <material name="red">
+        <color rgba="0.8 0 0 1"/>
+    </material>
+
+    <material name="blue">
+        <color rgba="0 0 0.8 1"/>
+    </material>
+
+    <material name="green">
+        <color rgba="0 0.8 0 1"/>
+    </material>
+
+    <material name="purple">
+        <color rgba="0.8 0 0.8 1"/>
+    </material>
+
+    <!-- <material name="clear">
+        <color rgba="0 0 0 0"/>
+    </material> -->
+
+<!-- fixed world frame link -->
+    <link name="world"/>
+
+<!-- palm -->
+    <xacro:box_link name="palm"
+                    origin_xyz="0 0 ${palm_height/2}"
+                    origin_rpy="0 1.5708 0"
+                    length="${palm_height}"
+                    width="${palm_width}"
+                    thickness="${thickness}"
+                    material="red" />
+
+<!-- joint connecting palm to world frame -->
+    <xacro:create_joint name="anchor"
+                        type="fixed"
+                        origin="0 0 0"
+                        axis="0 0 0"
+                        parent="world"
+                        child="palm"
+                        limit_lower="0"
+                        limit_upper="0"/>
+
+<!-- pinky finger -->
+    <!-- first knuckle -->
+    <xacro:create_joint name="joint_1"
+                        type="revolute"
+                        origin="0.006 0 ${palm_height-0.014}"
+                        axis="0 1 0"
+                        parent="palm"
+                        child="finger_1_proximal"
+                        limit_lower="0"
+                        limit_upper="2.094"/>
+
+    <!-- proximal segment -->
+    <xacro:box_link name="finger_1_proximal"
+                    origin_xyz="-0.006 ${-palm_width/2+finger_segment_width/2} ${finger_segment_length/2+0.018}"
+                    origin_rpy="0 1.5708 0"
+                    length="${finger_segment_length}"
+                    width="${finger_segment_width}"
+                    thickness="${thickness}"
+                    material="blue" />
+
+    <!-- second knuckle -->
+    <xacro:create_joint name="joint_2"
+                        type="revolute"
+                        origin="0 0 ${finger_segment_length+0.003}"
+                        axis="0 1 0"
+                        parent="finger_1_proximal"
+                        child="finger_1_distal"
+                        limit_lower="0"
+                        limit_upper="2.094" />
+
+    <!-- distal segment -->
+    <xacro:box_link name="finger_1_distal"
+                    origin_xyz="-0.006 ${-palm_width/2+finger_segment_width/2} ${finger_segment_length/2+0.018}"
+                    origin_rpy="0 1.5708 0"
+                    length="${finger_segment_length}"
+                    width="${finger_segment_width}"
+                    thickness="${thickness}"
+                    material="blue" />
+
+<!-- ring finger -->
+    <!-- first knuckle -->
+    <xacro:create_joint name="joint_3"
+                        type="revolute"
+                        origin="0.006 0 ${palm_height-0.014}"
+                        axis="0 1 0"
+                        parent="palm"
+                        child="finger_2_proximal"
+                        limit_lower="0"
+                        limit_upper="2.094" />
+
+    <!-- proximal segment -->
+    <xacro:box_link name="finger_2_proximal"
+                    origin_xyz="-0.006 ${-finger_segment_width/2-0.003} ${finger_segment_length/2+0.018}"
+                    origin_rpy="0 1.5708 0"
+                    length="${finger_segment_length}"
+                    width="${finger_segment_width}"
+                    thickness="${thickness}"
+                    material="blue" />
+
+    <!-- second knuckle -->
+    <xacro:create_joint name="joint_4"
+                        type="revolute"
+                        origin="0 0 ${finger_segment_length+0.003}"
+                        axis="0 1 0"
+                        parent="finger_2_proximal"
+                        child="finger_2_distal"
+                        limit_lower="0"
+                        limit_upper="2.094" />
+
+    <!-- distal segment -->
+    <xacro:box_link name="finger_2_distal"
+                    origin_xyz="-0.006 ${-finger_segment_width/2-0.003} ${finger_segment_length/2+0.018}"
+                    origin_rpy="0 1.5708 0"
+                    length="${finger_segment_length}"
+                    width="${finger_segment_width}"
+                    thickness="${thickness}"
+                    material="blue" />
+
+<!-- middle finger -->
+    <!-- first knuckle -->
+    <xacro:create_joint name="joint_5"
+                        type="revolute"
+                        origin="0.006 0 ${palm_height-0.014}"
+                        axis="0 1 0"
+                        parent="palm"
+                        child="finger_3_proximal"
+                        limit_lower="0"
+                        limit_upper="2.094" />
+
+    <!-- proximal segment -->
+    <xacro:box_link name="finger_3_proximal"
+                    origin_xyz="-0.006 ${finger_segment_width/2+0.003} ${finger_segment_length/2+0.018}"
+                    origin_rpy="0 1.5708 0"
+                    length="${finger_segment_length}"
+                    width="${finger_segment_width}"
+                    thickness="${thickness}"
+                    material="blue" />
+
+    <!-- second knuckle -->
+    <xacro:create_joint name="joint_6"
+                        type="revolute"
+                        origin="0 0 ${finger_segment_length+0.003}"
+                        axis="0 1 0"
+                        parent="finger_3_proximal"
+                        child="finger_3_distal"
+                        limit_lower="0"
+                        limit_upper="2.094" />
+
+    <!-- distal segment -->
+    <xacro:box_link name="finger_3_distal"
+                    origin_xyz="-0.006 ${finger_segment_width/2+0.003} ${finger_segment_length/2+0.018}"
+                    origin_rpy="0 1.5708 0"
+                    length="${finger_segment_length}"
+                    width="${finger_segment_width}"
+                    thickness="${thickness}"
+                    material="blue" />
+
+<!-- pointer finger -->
+    <!-- first knuckle -->
+    <xacro:create_joint name="joint_7"
+                        type="revolute"
+                        origin="0.006 0 ${palm_height-0.014}"
+                        axis="0 1 0"
+                        parent="palm"
+                        child="finger_4_proximal"
+                        limit_lower="0"
+                        limit_upper="2.094" />
+
+    <!-- proximal segment -->
+    <xacro:box_link name="finger_4_proximal"
+                    origin_xyz="-0.006 ${palm_width/2-finger_segment_width/2} ${finger_segment_length/2+0.018}"
+                    origin_rpy="0 1.5708 0"
+                    length="${finger_segment_length}"
+                    width="${finger_segment_width}"
+                    thickness="${thickness}"
+                    material="blue" />
+
+    <!-- second knuckle -->
+    <xacro:create_joint name="joint_8"
+                        type="revolute"
+                        origin="0 0 ${finger_segment_length+0.003}"
+                        axis="0 1 0"
+                        parent="finger_4_proximal"
+                        child="finger_4_distal"
+                        limit_lower="0"
+                        limit_upper="2.094" />
+
+    <!-- distal segment -->
+    <xacro:box_link name="finger_4_distal"
+                    origin_xyz="-0.006 ${palm_width/2-finger_segment_width/2} ${finger_segment_length/2+0.018}"
+                    origin_rpy="0 1.5708 0"
+                    length="${finger_segment_length}"
+                    width="${finger_segment_width}"
+                    thickness="${thickness}"
+                    material="blue" />
+
+<!-- thumb -->
+    <!-- CMC joint -->
+    <xacro:create_joint name="joint_9"
+                        type="revolute"
+                        origin="0 ${palm_width/2-0.01975} 0.02475"
+                        axis="1 0 0"
+                        parent="palm"
+                        child="cmc"
+                        limit_lower="-1.5708"
+                        limit_upper="1.5708" />
+
+    <!--  -->
+    <xacro:box_link name="cmc"
+                    origin_xyz="0.0105 0 0"
+                    origin_rpy="0 1.5708 0"
+                    length="${cmc_length}"
+                    width="${cmc_width}"
+                    thickness="${cmc_thickness}"
+                    material="green" />
+
+    <!-- first knuckle -->
+    <xacro:create_joint name="joint_10"
+                        type="revolute"
+                        origin="0.02 0.006 0"
+                        axis="0 0 -1"
+                        parent="cmc"
+                        child="thumb_proximal"
+                        limit_lower="0"
+                        limit_upper="2.094" />
+
+    <!-- proximal segment -->
+    <xacro:box_link name="thumb_proximal"
+                    origin_xyz="-0.01275 ${0.032+thumb_prox_length/2} 0"
+                    origin_rpy="1.5708 0 1.5708"
+                    length="${thumb_prox_length}"
+                    width="${finger_segment_width}"
+                    thickness="${thickness}"
+                    material="purple" />
+
+    <!-- second knuckle -->
+    <xacro:create_joint name="joint_11"
+                        type="revolute"
+                        origin="-0.00425 0.057 0"
+                        axis="0 0 -1"
+                        parent="thumb_proximal"
+                        child="thumb_distal"
+                        limit_lower="0"
+                        limit_upper="2.094" />
+
+    <!-- distal segment -->
+    <xacro:box_link name="thumb_distal"
+                    origin_xyz="-0.0085 ${finger_segment_length/2+0.017} 0"
+                    origin_rpy="1.5708 0 1.5708"
+                    length="${finger_segment_length}"
+                    width="${finger_segment_width}"
+                    thickness="${thickness}"
+                    material="blue" />
+
+</robot>

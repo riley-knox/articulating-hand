@@ -1,0 +1,15 @@
+# geometric parameters for the articulating hand robot
+
+palm_width: 0.160
+palm_height: 0.125
+
+finger_segment_length: 0.06
+finger_segment_width: 0.036
+
+cmc_length: 0.036
+cmc_width: 0.04
+
+thumb_prox_length: 0.04
+
+thickness: 0.0025
+cmc_thickness: 0.0035

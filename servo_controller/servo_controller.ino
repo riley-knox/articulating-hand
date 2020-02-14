@@ -6,10 +6,12 @@
 
 ros::NodeHandle nh;
 
+// actuate callback function
+
 void setup() {
   // setup functions
   // largely cribbed from a variety of examples, MAY NEED TO ALTER THINGS A BIT
-  nh.initNode();
+  nh.initNode();        // initialize node
 
 }
 
