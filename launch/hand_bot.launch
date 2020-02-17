@@ -6,4 +6,8 @@
     <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>
 
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find articulating_hand)/config/hand_bot.rviz"/>
+
+    <!-- <node name="arduino" pkg="rosserial_python" type="serial_node.py">
+
+    </node> -->
 </launch>
