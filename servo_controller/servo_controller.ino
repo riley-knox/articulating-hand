@@ -19,8 +19,7 @@ void servo_callback(const articulating_hand::ServoDrive& cmd){
   uint8_t servoNum = cmd.servo_num;           // servo number
   uint16_t servoPos = cmd.servo_pos;          // servo position
 
-  
-  if ((0 <= servoNum) && (servoNum < NUM_SERVOS) && 
+  if ((0 <= servoNum) && (servoNum < NUM_SERVOS) &&       // make sure servo number and position are in range
       (SERVO_MIN < servoPos) && (servoPos < SERVO_MAX)){
     digitalWrite(13, HIGH);           // turn on onboard LED
 
@@ -39,14 +38,13 @@ void servo_callback(const articulating_hand::ServoDrive& cmd){
     delay(1000);              // wait 1s
     digitalWrite(10, LOW);    // turn off external LED
   }
-  
+
 }
 
 // initialize subscriber
 ros::Subscriber<articulating_hand::ServoDrive> servo_sub("servo_cmd", &servo_callback);
 
 void setup() {
-  // setup functions
   nh.initNode();            // initialize node
 
   nh.subscribe(servo_sub);  // initialize subscriber
