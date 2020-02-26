@@ -1,5 +1,5 @@
 #include <ros.h>
-#include <Servo.h>
+#include <Servo.h>            // PROBABLY DON'T NEED, MAYBE DELETE WHEN CLEANING UP ROS NODE
 #include <Adafruit_PWMServoDriver.h>
 #include <articulating_hand/ServoDrive.h>
 
@@ -23,7 +23,7 @@ void servo_callback(const articulating_hand::ServoDrive& cmd){
       (SERVO_MIN < servoPos) && (servoPos < SERVO_MAX)){
     digitalWrite(13, HIGH);           // turn on onboard LED
 
-    uint16_t pulseLength = servoPos;
+    uint16_t pulseLength = servoPos;    // PROBABLY DON'T NEED, MAYBE DELETE WHEN CLEANING UP ROS NODE
 
 //    for (uint16_t pulseLength = servoPos; pulseLength < SERVO_MAX; pulseLength++){
     srvDrvr.setPWM(servoNum, 0, pulseLength);

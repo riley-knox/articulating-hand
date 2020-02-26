@@ -1,0 +1,98 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
+import math
+import rospy
+from articulating_hand.msg import ServoDrive
+from sensor_msgs.msg import JointState
+from std_msgs.msg import Header
+
+class Convert(object):
+    def __init__(self):
+        rospy.init_node('update_joints')           # initialize node
+
+        # get values from parameter server
+        # individual servo limits
+        self.servo_limits = rospy.get_param("servo_limits")
+        # joint limits
+        self.finger_limits = rospy.get_param("finger_limits")
+        self.thumb_limits = rospy.get_param("thumb_limits")
+
+        # initialize publisher
+        self.move_joint = rospy.Publisher('joint_states', JointState, queue_size=10)
+        # initialize subscribers
+        self.servo_command = rospy.Subscriber('servo_cmd', ServoDrive, self.create_jointstate)
+
+        # initialize variables
+        self.joint_names = ['joint_1', 'joint_2', 'joint_3', 'joint_4', 'joint_5',
+                            'joint_6', 'joint_7', 'joint_8', 'joint_9', 'joint_10',
+                            'joint_11']
+        self.joint_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,]
+
+        self.create_init_state()
+
+    def create_init_state(self):
+        rospy.sleep(1)                  # wait 1s before starting
+
+        init = JointState()             # initialize JointState message
+        init.header = Header()          # initialize Header component of JointState
+
+        init.header.stamp = rospy.Time.now()    # timestamp
+        init.name = self.joint_names            # joint names
+        init.position = self.joint_pos          # initial joint positions
+        init.velocity = []                      # joint velocities (none)
+        init.effort = []                        # applied forces (none)
+
+        self.move_joint.publish(init)   # publish message
+
+    def create_jointstate(self, command):
+        state = JointState()                # initialize message to publish
+        state.header = Header()             # initialize header component
+
+        state.name = self.joint_names       # joint names
+        state.velocity = []                 # joint velocities (none)
+        state.effort = []                   # applied forces (none)
+
+        joint = command.servo_num           # joint number (i.e. array index)
+        srvpos = command.servo_pos          # servo position command
+
+        # convert from servo position to joint angle
+        joint_angle = self.converter(joint, srvpos)
+
+        # update joint position vector
+        self.joint_pos[joint] = joint_angle
+        state.position = self.joint_pos
+
+        # message time stamp
+        state.header.stamp = rospy.Time.now()
+
+        #publish angle to /joint_states
+        self.move_joint.publish(state)
+
+    def converter(self, joint, position):
+        if joint == 8:                  # use CMC joint limits if relevant
+            joint_lims = [math.pi*x for x in self.thumb_limits]
+        else:                           # otherwise use finger joint limits
+            joint_lims = [math.pi*x for x in self.finger_limits]
+
+        # servo limits for relevant joint
+        srv_low = self.servo_limits[joint][0]       # lower limit (i.e. fist)
+        srv_high = self.servo_limits[joint][1]      # upper limit (i.e. open hand)
+
+        # linear mapping from servo position to joint angle
+        M = (joint_lims[0] - joint_lims[1])/(srv_high - srv_low)
+        B = joint_lims[0] - M*srv_high
+
+        angle = M*position + B
+
+        return angle
+
+def main():
+    Convert()                       # call class
+    rospy.spin()
+
+if __name__ == '__main__':
+    try:
+        main()
+    except rospy.ROSInterruptException:
+        pass
