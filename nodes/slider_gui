@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+
+import math
+import Tkinter as tk
+import rospy
+from articulating_hand.msg import ServoDrive
+
+class Sliders(object):
+    def __init__(self):
+        rospy.init_node('slider_gui')   # initialize node
+
+        self.servo_limits = rospy.get_param("servo_limits")     # load servo ranges
+
+        self.joint_names = rospy.get_param("joint_names")       # load list of joints
+
+        self.root = tk.Tk()                 # create GUI root window
+        self.root.geometry("800x425+30+30") # define root window size
+
+        self.create_sliders()               # create slider bars
+
+    def create_sliders(self):
+        for i in range(len(self.joint_names)): #fill in array once broken servo fixed
+            srvrange = self.servo_limits[i][1] - self.servo_limits[i][0]
+            if i < 8:                       # finger joints
+                # create slider bar object
+                j = tk.Scale(self.root, from_=self.servo_limits[i][1],
+                             to_=self.servo_limits[i][0], tickinterval=srvrange,
+                             length=100)
+                c_a = math.floor(i/2)       # define positioning constants
+                if (i-1) % 2 == 0:
+                    c_b = 0
+                else:
+                    c_b = 1
+                c_e = 0
+                c_f = 0
+            elif i == 8:                    # CMC joint
+                j = tk.Scale(self.root, from_=self.servo_limits[i][0],
+                             to_=self.servo_limits[i][1], tickinterval=srvrange,
+                             length=100)
+                c_a = math.floor(i/2)       # positioning constants vary based on joint type
+                c_b = 2
+                c_e = 0
+                c_f = 0
+            else:                           # thumb joints
+                j = tk.Scale(self.root, from_=self.servo_limits[i][0],
+                             to_=self.servo_limits[i][1], tickinterval=srvrange,
+                             length=100, orient='horizontal')
+                c_a = i - 4                 # joint "row" multiplier
+                c_b = 2                     # joint "column" multiplier
+                c_e = 25*(i-9)              # horizontal offset
+                c_f = 25                    # vertical offset
+
+            # place slider bar object in root window with x- and y- coordinates
+            j.place(x=(100*c_a)+25+c_e, y=(125*c_b)+25+c_f)
+
+def main():
+    S = Sliders()               # call Sliders class
+    S.root.mainloop()           # launch TKinter event loop
+    rospy.spin()
+
+if __name__ == '__main__':
+    try:
+        main()
+    except rospy.ROSInterruptException:
+        pass

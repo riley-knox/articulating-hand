@@ -2,19 +2,18 @@
     <param name="robot_description" command="$(find xacro)/xacro $(find articulating_hand)/model/hand.xacro"/>
 
     <rosparam file="$(find articulating_hand)/model/limits.yaml" command="load"/>
+    <rosparam file="$(find articulating_hand)/model/names.yaml" command="load"/>
 
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
-    <!-- <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/> -->
-
-    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/> -->
-
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find articulating_hand)/config/hand_bot.rviz"/>
 
-    <node name="arduino" pkg="rosserial_python" type="serial_node.py">
+    <!-- <node name="arduino" pkg="rosserial_python" type="serial_node.py">
         <param name="port" type="string" value="/dev/ttyACM0"/>
         <param name="baud" type="int" value="57600"/>
-    </node>
+    </node> -->
 
     <node name="converter" pkg="articulating_hand" type="update_joints"/>
+
+    <node name="slider_bar_gui" pkg="articulating_hand" type="slider_gui"/>
 </launch>
