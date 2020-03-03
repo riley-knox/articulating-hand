@@ -2,7 +2,7 @@
     <param name="robot_description" command="$(find xacro)/xacro $(find articulating_hand)/model/hand.xacro"/>
 
     <rosparam file="$(find articulating_hand)/model/limits.yaml" command="load"/>
-    <rosparam file="$(find articulating_hand)/model/names.yaml" command="load"/>
+    <rosparam file="$(find articulating_hand)/model/joint_state_init.yaml" command="load"/>
 
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 

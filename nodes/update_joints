@@ -19,7 +19,7 @@ class Convert(object):
         # joint names
         self.joint_names = rospy.get_param("joint_names")
         # initial joint angles
-        self.joint_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,]
+        self.joint_pos = [math.pi*a for a in rospy.get_param("joint_inits")[0]]
 
         # initialize publisher
         self.move_joint = rospy.Publisher('joint_states', JointState, queue_size=10)

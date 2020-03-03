@@ -7,16 +7,23 @@ from articulating_hand.msg import ServoDrive
 
 class Sliders(object):
     def __init__(self):
-        rospy.init_node('slider_gui')   # initialize node
+        rospy.init_node('slider_gui')           # initialize node
 
         self.servo_limits = rospy.get_param("servo_limits")     # load servo ranges
 
         self.joint_names = rospy.get_param("joint_names")       # load list of joints
 
-        self.root = tk.Tk()                 # create GUI root window
-        self.root.geometry("800x425+30+30") # define root window size
+        self.slider_inits = rospy.get_param("joint_inits")[1]   # initial slider bar positions
 
-        self.create_sliders()               # create slider bars
+        self.root = tk.Tk()                     # create GUI root window
+        self.root.geometry("800x425+30+30")     # define root window size
+
+        self.sliders = []                       # empty list to hold slider bar objects
+
+        # initialize publisher
+        self.move_servo = rospy.Publisher('servo_cmd', ServoDrive, queue_size=10)
+
+        self.create_sliders()                   # create slider bars
 
     def create_sliders(self):
         for i in range(len(self.joint_names)): #fill in array once broken servo fixed
@@ -45,18 +52,41 @@ class Sliders(object):
                 j = tk.Scale(self.root, from_=self.servo_limits[i][0],
                              to_=self.servo_limits[i][1], tickinterval=srvrange,
                              length=100, orient='horizontal')
-                c_a = i - 4                 # joint "row" multiplier
-                c_b = 2                     # joint "column" multiplier
+                c_a = i - 4                 # joint "column" multiplier
+                c_b = 2                     # joint "row" multiplier
                 c_e = 25*(i-9)              # horizontal offset
                 c_f = 25                    # vertical offset
+
+            # set slider initial position
+            j.set(self.slider_inits[i])
 
             # place slider bar object in root window with x- and y- coordinates
             j.place(x=(100*c_a)+25+c_e, y=(125*c_b)+25+c_f)
 
+            self.sliders.append(j)          # add slider bar object to list
+
+    def servo_move(self):
+        for i in range(len(self.joint_names)):
+            command = ServoDrive()                  # initialize servo command object
+
+            # servo command details
+            command.servo_num = i
+            command.servo_pos = self.sliders[i].get()
+
+            # publish servo command
+            self.move_servo.publish(command)
+
 def main():
     S = Sliders()               # call Sliders class
-    S.root.mainloop()           # launch TKinter event loop
-    rospy.spin()
+    # time_init = rospy.Time.now()
+    # rospy.logerr("Moving servos")
+    while not rospy.is_shutdown():
+        # time_now = rospy.Time.now()
+        # time_elapsed = time_now - time_init
+        # rospy.logerr(time_elapsed)
+        # time_init = time_now
+        S.root.update()
+        S.servo_move()
 
 if __name__ == '__main__':
     try:
