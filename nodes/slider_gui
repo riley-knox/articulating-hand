@@ -6,6 +6,10 @@ import rospy
 from articulating_hand.msg import ServoDrive
 
 class Sliders(object):
+    """
+    Contains functions for creating joint control slider bars and converting their
+    values into robot motion.
+    """
     def __init__(self):
         rospy.init_node('slider_gui')           # initialize node
 
@@ -26,6 +30,10 @@ class Sliders(object):
         self.create_sliders()                   # create slider bars
 
     def create_sliders(self):
+        """
+        Creates the joint control GUI window by initializing and placing Tkinter
+        slider bar objects.
+        """
         for i in range(len(self.joint_names)): #fill in array once broken servo fixed
             srvrange = self.servo_limits[i][1] - self.servo_limits[i][0]
             if i < 8:                       # finger joints
@@ -44,7 +52,7 @@ class Sliders(object):
                 j = tk.Scale(self.root, from_=self.servo_limits[i][0],
                              to_=self.servo_limits[i][1], tickinterval=srvrange,
                              length=100)
-                c_a = math.floor(i/2)       # positioning constants vary based on joint type
+                c_a = math.floor(i/2)       # positioning constants vary based the joint
                 c_b = 2
                 c_e = 0
                 c_f = 0
@@ -66,6 +74,10 @@ class Sliders(object):
             self.sliders.append(j)          # add slider bar object to list
 
     def servo_move(self):
+        """
+        Creates motion at each sequential joint by driving its servo to the position
+        set by its slider bar.
+        """
         for i in range(len(self.joint_names)):
             command = ServoDrive()                  # initialize servo command object
 
@@ -77,16 +89,15 @@ class Sliders(object):
             self.move_servo.publish(command)
 
 def main():
+    """
+    Main function; initializes Sliders class and repeatedly calls its servo actuation
+    function.
+    """
     S = Sliders()               # call Sliders class
-    # time_init = rospy.Time.now()
-    # rospy.logerr("Moving servos")
     while not rospy.is_shutdown():
-        # time_now = rospy.Time.now()
-        # time_elapsed = time_now - time_init
-        # rospy.logerr(time_elapsed)
-        # time_init = time_now
-        S.root.update()
-        S.servo_move()
+        rospy.sleep(0.01)       # wait 1/100 of a second (prevents comms delay between GUI and RViz)
+        S.root.update()         # update GUI window
+        S.servo_move()          # execute servo motion
 
 if __name__ == '__main__':
     try:
