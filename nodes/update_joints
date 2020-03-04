@@ -2,9 +2,9 @@
 
 import math
 import rospy
-from articulating_hand.msg import ServoDrive
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Header
+from articulating_hand.msg import ServoArray, ServoDrive
 
 class Convert(object):
     def __init__(self):
@@ -24,7 +24,11 @@ class Convert(object):
         # initialize publisher
         self.move_joint = rospy.Publisher('joint_states', JointState, queue_size=10)
         # initialize subscribers
-        self.servo_command = rospy.Subscriber('servo_cmd', ServoDrive, self.create_jointstate)
+        # FIX TOPIC TYPE AND CALLBACK FUNCTION
+        self.servo_command = rospy.Subscriber('servo_cmd', ServoArray, self.create_jointstate)
+
+        # 50 Hz publishing rate
+        # self.rate = rospy.Rate(50)
 
         self.create_init_state()
 
@@ -42,6 +46,7 @@ class Convert(object):
 
         self.move_joint.publish(init)   # publish message
 
+    # FIX THIS FUNCTION TO DEAL WITH ServoArray INSTEAD OF ServoDrive
     def create_jointstate(self, command):
         state = JointState()                # initialize message to publish
         state.header = Header()             # initialize header component
@@ -50,15 +55,17 @@ class Convert(object):
         state.velocity = []                 # joint velocities (none)
         state.effort = []                   # applied forces (none)
 
-        joint = command.servo_num           # joint number (i.e. array index)
-        srvpos = command.servo_pos          # servo position command
+        for i in range(len(self.joint_names)):
 
-        # convert from servo position to joint angle
-        joint_angle = self.converter(joint, srvpos)
+            joint = command.srv_comms[i].servo_num           # joint number (i.e. array index)
+            srvpos = command.srv_comms[i].servo_pos          # servo position command
 
-        # update joint position vector
-        self.joint_pos[joint] = joint_angle
-        state.position = self.joint_pos
+            # convert from servo position to joint angle
+            joint_angle = self.converter(joint, srvpos)
+
+            # update joint position vector
+            self.joint_pos[joint] = joint_angle
+            state.position = self.joint_pos
 
         # message time stamp
         state.header.stamp = rospy.Time.now()
@@ -85,6 +92,9 @@ class Convert(object):
 
 def main():
     Convert()                       # call class
+    # rate = rospy.Rate(50)           # 50 Hz execution rate
+    # while not rospy.is_shutdown():
+    #     rate.sleep()
     rospy.spin()
 
 if __name__ == '__main__':

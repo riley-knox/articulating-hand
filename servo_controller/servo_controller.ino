@@ -1,12 +1,13 @@
 #include <ros.h>
 #include <Servo.h>            // PROBABLY DON'T NEED, MAYBE DELETE WHEN CLEANING UP ROS NODE
 #include <Adafruit_PWMServoDriver.h>
-#include <articulating_hand/ServoDrive.h>
+#include <articulating_hand/ServoArray.h>
 
 #define SERVO_FREQ 50
 #define SERVO_MIN 10
 #define SERVO_MAX 5000
 #define NUM_SERVOS 11
+#define BAUD 115200
 
 // instantiate node handle; allows publisher/subscriber creation and handles serial communication
 ros::NodeHandle nh;
@@ -15,36 +16,21 @@ ros::NodeHandle nh;
 Adafruit_PWMServoDriver srvDrvr = Adafruit_PWMServoDriver();
 
 // actuation callback function
-void servo_callback(const articulating_hand::ServoDrive& cmd){
-  uint8_t servoNum = cmd.servo_num;           // servo number
-  uint16_t servoPos = cmd.servo_pos;          // servo position
+void servo_callback(const articulating_hand::ServoArray& cmd){
+  for (int i = 0; i < NUM_SERVOS; i++){
+    uint8_t servoNum = cmd.srv_comms[i].servo_num;           // servo number
+    uint16_t servoPos = cmd.srv_comms[i].servo_pos;          // servo position
 
-  if ((0 <= servoNum) && (servoNum < NUM_SERVOS) &&       // make sure servo number and position are in range
-      (SERVO_MIN < servoPos) && (servoPos < SERVO_MAX)){
-    digitalWrite(13, HIGH);           // turn on onboard LED
-
-    uint16_t pulseLength = servoPos;    // PROBABLY DON'T NEED, MAYBE DELETE WHEN CLEANING UP ROS NODE
-
-//    for (uint16_t pulseLength = servoPos; pulseLength < SERVO_MAX; pulseLength++){
-    srvDrvr.setPWM(servoNum, 0, pulseLength);
-//    }
-
-    delay(500);
-
-    digitalWrite(13, LOW);            // turn off onboard LED
+    srvDrvr.setPWM(servoNum, 0, servoPos);
   }
-  else {                      // if servo number or position is out of range
-    digitalWrite(10, HIGH);   // turn on external LED
-    delay(1000);              // wait 1s
-    digitalWrite(10, LOW);    // turn off external LED
-  }
-
 }
 
 // initialize subscriber
-ros::Subscriber<articulating_hand::ServoDrive> servo_sub("servo_cmd", &servo_callback);
+ros::Subscriber<articulating_hand::ServoArray> servo_sub("servo_cmd", &servo_callback);
 
 void setup() {
+  nh.getHardware()->setBaud(BAUD);      // initialize serial communication; baud = 115200
+  
   nh.initNode();            // initialize node
 
   nh.subscribe(servo_sub);  // initialize subscriber
@@ -53,8 +39,8 @@ void setup() {
   srvDrvr.setOscillatorFrequency(27000000);
   srvDrvr.setPWMFreq(SERVO_FREQ);
 
-  pinMode(10, OUTPUT);      // external LED pin
-  pinMode(13, OUTPUT);      // onboard LED pin
+//  pinMode(10, OUTPUT);      // external LED pin/
+//  pinMode(13, OUTPUT);      // onboard LED pin/
 }
 
 void loop() {

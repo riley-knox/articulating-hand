@@ -3,7 +3,7 @@
 import math
 import Tkinter as tk
 import rospy
-from articulating_hand.msg import ServoDrive
+from articulating_hand.msg import ServoArray, ServoDrive
 
 class Sliders(object):
     """
@@ -25,7 +25,7 @@ class Sliders(object):
         self.sliders = []                       # empty list to hold slider bar objects
 
         # initialize publisher
-        self.move_servo = rospy.Publisher('servo_cmd', ServoDrive, queue_size=10)
+        self.move_servo = rospy.Publisher('servo_cmd', ServoArray, queue_size=10)
 
         self.create_sliders()                   # create slider bars
 
@@ -78,6 +78,8 @@ class Sliders(object):
         Creates motion at each sequential joint by driving its servo to the position
         set by its slider bar.
         """
+        servo_commands = ServoArray()
+
         for i in range(len(self.joint_names)):
             command = ServoDrive()                  # initialize servo command object
 
@@ -85,8 +87,10 @@ class Sliders(object):
             command.servo_num = i
             command.servo_pos = self.sliders[i].get()
 
-            # publish servo command
-            self.move_servo.publish(command)
+            servo_commands.srv_comms.append(command)
+
+        # publish servo command
+        self.move_servo.publish(servo_commands)
 
 def main():
     """
@@ -94,8 +98,9 @@ def main():
     function.
     """
     S = Sliders()               # call Sliders class
+    rate = rospy.Rate(50)       # 50 Hz publishing rate
     while not rospy.is_shutdown():
-        rospy.sleep(0.01)       # wait 1/100 of a second (prevents comms delay between GUI and RViz)
+        rate.sleep()            # wait 1/50 of a second (prevents comms delay between GUI and RViz)
         S.root.update()         # update GUI window
         S.servo_move()          # execute servo motion
 

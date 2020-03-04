@@ -8,10 +8,10 @@
 
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find articulating_hand)/config/hand_bot.rviz"/>
 
-    <!-- <node name="arduino" pkg="rosserial_python" type="serial_node.py">
+    <node name="arduino" pkg="rosserial_python" type="serial_node.py">
         <param name="port" type="string" value="/dev/ttyACM0"/>
-        <param name="baud" type="int" value="57600"/>
-    </node> -->
+        <param name="baud" type="int" value="115200"/>
+    </node>
 
     <node name="converter" pkg="articulating_hand" type="update_joints"/>
 
