@@ -3,3 +3,6 @@
 
 # Libreoffice Writer docs
 *.odt
+
+# unneeded Arduino stuff
+11_servos
