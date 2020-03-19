@@ -7,6 +7,11 @@ from std_msgs.msg import Header
 from articulating_hand.msg import ServoArray, ServoDrive
 
 class Convert(object):
+    """
+    Contains functions for creating the initial robot state, creating subsequent
+    states from servo position commands, and converting from commanded position
+    to joint angle.
+    """
     def __init__(self):
         rospy.init_node('update_joints')           # initialize node
 
@@ -27,12 +32,12 @@ class Convert(object):
         # FIX TOPIC TYPE AND CALLBACK FUNCTION
         self.servo_command = rospy.Subscriber('servo_cmd', ServoArray, self.create_jointstate)
 
-        # 50 Hz publishing rate
-        # self.rate = rospy.Rate(50)
-
         self.create_init_state()
 
     def create_init_state(self):
+        """
+        Creates initial joint state from robot home position.
+        """
         rospy.sleep(1)                  # wait 1s before starting
 
         init = JointState()             # initialize JointState message
@@ -46,8 +51,10 @@ class Convert(object):
 
         self.move_joint.publish(init)   # publish message
 
-    # FIX THIS FUNCTION TO DEAL WITH ServoArray INSTEAD OF ServoDrive
     def create_jointstate(self, command):
+        """
+        Creates a JointState message from the commanded servo position(s).
+        """
         state = JointState()                # initialize message to publish
         state.header = Header()             # initialize header component
 
@@ -74,6 +81,10 @@ class Convert(object):
         self.move_joint.publish(state)
 
     def converter(self, joint, position):
+        """
+        Converts from a servo position command to a joint angle command based on
+        the individual servo's position limits.
+        """
         if joint == 8:                  # use CMC joint limits if relevant
             joint_lims = [math.pi*x for x in self.thumb_limits]
         else:                           # otherwise use finger joint limits
@@ -91,10 +102,10 @@ class Convert(object):
         return angle
 
 def main():
+    """
+    Main function, initializes converter class and updates publishers/subscribers.
+    """
     Convert()                       # call class
-    # rate = rospy.Rate(50)           # 50 Hz execution rate
-    # while not rospy.is_shutdown():
-    #     rate.sleep()
     rospy.spin()
 
 if __name__ == '__main__':

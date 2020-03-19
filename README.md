@@ -15,6 +15,33 @@
     - package.xml
 - Bill of materials
 
+## ROS Structure
+
+### Nodes
+- /converter
+    - Creates ROS JointState messages from servo position commands
+    - Publishers: `joint_states`
+    - Subscribers: `servo_cmd`
+- /slider_bar_gui
+    - Creates and updates the control GUI window
+    - Generates commands to drive servos
+    - Publishers: `servo_cmd`
+    - Subscribers: None
+- /arduino
+    - Creates joint motion via PWM signals in response to command
+    - Publishers: None
+    - Subscribers: `servo_cmd`
+- /robot_state_publisher
+    - Makes the robot state (ex: position and velocity) available for motion planning, visualization, and simulation
+- /rviz
+    - Provides visualization for robot positioning
+
+### Topics/Types
+Note: only custom types written for this package are included here.
+
+- `servo_cmd`: custom message type `ServoArray`, array of 2-vectors each holding a servo number and position; allows for compact communication by holding all servo position commands in one message
+
+
 ## Assembly
 
 ### Printed Parts
