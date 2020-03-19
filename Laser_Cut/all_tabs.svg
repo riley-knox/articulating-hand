@@ -231,9 +231,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="89.063898"
-     inkscape:cy="966.60785"
+     inkscape:zoom="4.0000001"
+     inkscape:cx="194.38651"
+     inkscape:cy="1040.7796"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -250,7 +250,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1995,6 +1995,164 @@
       <g
          inkscape:label="SECTION_JOG_LINES"
          id="g2553" />
+    </g>
+    <g
+       id="g1633-3"
+       transform="matrix(0.26458333,0,0,0.26458333,149.07143,-293.9665)">
+      <g
+         id="g1543-6"
+         inkscape:label="0" />
+      <g
+         id="g1545-7"
+         inkscape:label="SECTION_CUTTING_LINE" />
+      <g
+         id="g1547-5"
+         inkscape:label="DETAIL_VIEW_BORDER" />
+      <g
+         id="g1549-3"
+         inkscape:label="DETAIL_VIEW_PARENT_BORDER" />
+      <g
+         id="g1551-5"
+         inkscape:label="TEXT" />
+      <g
+         id="g1553-6"
+         inkscape:label="SKETCHED_GEOMETRY" />
+      <g
+         id="g1555-2"
+         inkscape:label="VIRTUAL_SHARPS" />
+      <g
+         id="g1557-9"
+         inkscape:label="CENTERLINES" />
+      <g
+         id="g1559-1"
+         inkscape:label="CENTERMARKS" />
+      <g
+         id="g1561-2"
+         inkscape:label="TABLES" />
+      <g
+         id="g1563-7"
+         inkscape:label="IMAGES" />
+      <g
+         id="g1565-0"
+         inkscape:label="ANNOTATION_LINES" />
+      <g
+         id="g1567-9"
+         inkscape:label="ANNOTATION_TEXT" />
+      <g
+         id="g1569-3"
+         inkscape:label="SIDE_THREAD_SYMBOLS" />
+      <g
+         id="g1571-6"
+         inkscape:label="SIDE_THREAD_SYMBOLS_HIDDEN" />
+      <g
+         id="g1573-0"
+         inkscape:label="SURFACE_THREAD_SYMBOLS" />
+      <g
+         id="g1575-6"
+         inkscape:label="SURFACE_THREAD_SYMBOLS_ON_" />
+      <g
+         id="g1577-2"
+         inkscape:label="SURFACE_THREAD_SYMBOLS_HID" />
+      <g
+         id="g1579-6"
+         inkscape:label="BLIND_THREAD_SYMBOLS" />
+      <g
+         id="g1581-1"
+         inkscape:label="BLIND_THREAD_SYMBOLS_HIDDE" />
+      <g
+         id="g1583-8"
+         inkscape:label="EXPLODE_LINES" />
+      <g
+         id="g1585-7"
+         inkscape:label="BREAK_LINES" />
+      <g
+         id="g1587-9"
+         inkscape:label="SHEETMETAL_BEND_LINES_UP" />
+      <g
+         id="g1589-2"
+         inkscape:label="SHEETMETAL_BEND_LINES_DOWN" />
+      <g
+         id="g1591-0"
+         inkscape:label="SHEETMETAL_BEND_TANGENT_LI" />
+      <g
+         id="g1593-2"
+         inkscape:label="SHEETMETAL_CUT_LINES" />
+      <g
+         id="g1595-3"
+         inkscape:label="HIDDEN" />
+      <g
+         id="g1615-7"
+         inkscape:label="VISIBLE">
+        <path
+           id="path1597-5"
+           style="fill:none;stroke:#000000"
+           d="m -335.79632,1181.6719 v 18.8976"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path1599-9"
+           style="fill:none;stroke:#000000"
+           d="m -335.79632,1181.6719 h -26.45669"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path1601-2"
+           style="fill:none;stroke:#000000"
+           d="m -362.25301,1173.4639 v 8.208"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path1603-2"
+           style="fill:none;stroke:#000000"
+           d="m -335.79632,1173.4639 h -26.45669"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path1605-8"
+           style="fill:none;stroke:#000000"
+           d="m -335.79632,1127.3175 v 46.1464"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path1607-9"
+           style="fill:none;stroke:#000000"
+           d="m -388.70971,1127.3175 h 52.91339"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path1609-7"
+           style="fill:none;stroke:#000000"
+           d="m -388.70971,1127.3175 v 73.252"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path1611-3"
+           style="fill:none;stroke:#000000"
+           d="m -388.70971,1200.5695 h 52.91339"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path1613-6"
+           style="fill:none;stroke:#000000"
+           d="m -358.47349,1150.7867 a 3.779528,3.779528 0 1 0 -7.55905,0 3.779528,3.779528 0 1 0 7.55905,0 z"
+           inkscape:connector-curvature="0" />
+      </g>
+      <g
+         id="g1617-1"
+         inkscape:label="MODELSKETCH_VISIBLE" />
+      <g
+         id="g1619-2"
+         inkscape:label="MODELSKETCH_CONSTRUCTION" />
+      <g
+         id="g1621-9"
+         inkscape:label="HIDDEN_BASE_VIEW" />
+      <g
+         id="g1623-3"
+         inkscape:label="TANGENT_LINES" />
+      <g
+         id="g1625-1"
+         inkscape:label="TANGENT_HIDDEN" />
+      <g
+         id="g1627-9"
+         inkscape:label="INVISIBLE_LINES" />
+      <g
+         id="g1629-4"
+         inkscape:label="VIEW_HATCHES" />
+      <g
+         id="g1631-7"
+         inkscape:label="SECTION_JOG_LINES" />
     </g>
   </g>
 </svg>

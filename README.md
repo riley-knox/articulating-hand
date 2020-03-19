@@ -1,10 +1,45 @@
 # articulating-hand
 
+### Contents
+
+- CAD files
+- Laser cutter profiles
+- Arduino sketches
+- ROS directories and files
+    - /config
+    - /launch
+    - /model
+    - /msg
+    - /nodes
+    - CMakeLists.txt
+    - package.xml
+- Bill of materials
+
+## Assembly
+
+### Printed Parts
+
+Component files provided in .stl form for easy 3D printing. If multiple files exist for the same part, use the file with the highest version number.
+
+Print parts with 0.1mm layer height for best results. Print all pieces with largest flat side touching print bed (see below). Use 25% infill with an appropriate pattern to prevent flat surfaces from sagging. Use supports.
+
+![Print Bed](misc/print_flat.png)
+
+**Number of Pieces to Print:**
+- Distal finger: 5
+- Proximal finger: 4
+- CMC joint small: 1
+- CMC joint big: 1
+
+### Laser-Cut Parts
+
+
+
 **Operation:**<br>
 Driving single servo:<br>
     `rostopic pub /servo_cmd articulating_hand/ServoDrive <servo_number> <servo_position> --once`
 
-**Common errors and how to fix:**<br>
+**Common errors and how to fix them:**<br>
 When uploading sketch to Arduino:
 - *ioctl("TIOCMSET"): Protocol error*<br>
     Unplug USB cable and plug back in
