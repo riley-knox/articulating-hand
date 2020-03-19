@@ -6,3 +6,6 @@
 
 # unneeded Arduino stuff
 11_servos
+
+# unnecessary files
+lasercut_tabs.dxf
