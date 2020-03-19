@@ -7,5 +7,7 @@
 # unneeded Arduino stuff
 11_servos
 
-# unnecessary files
-lasercut_tabs.dxf
+# unnecessary laser cutter files
+Laser_Cut/*.dxf
+Laser_cut/tolerance_test.svg
+Laser_cut/tolerance_test_v2.svg
