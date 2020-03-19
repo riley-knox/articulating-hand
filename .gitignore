@@ -9,5 +9,5 @@
 
 # unnecessary laser cutter files
 Laser_Cut/*.dxf
-Laser_cut/tolerance_test.svg
-Laser_cut/tolerance_test_v2.svg
+Laser_Cut/tolerance_test.svg
+Laser_Cut/tolerance_test_v2.svg
