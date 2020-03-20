@@ -11,3 +11,6 @@
 Laser_Cut/*.dxf
 Laser_Cut/tolerance_test.svg
 Laser_Cut/tolerance_test_v2.svg
+
+# image files and stuff
+*.svg

@@ -52,7 +52,7 @@ class Sliders(object):
                 j = tk.Scale(self.root, from_=self.servo_limits[i][0],
                              to_=self.servo_limits[i][1], tickinterval=srvrange,
                              length=100)
-                c_a = math.floor(i/2)       # positioning constants vary based the joint
+                c_a = math.floor(i/2)       # positioning constants vary based on joint
                 c_b = 2
                 c_e = 0
                 c_f = 0

@@ -30,7 +30,7 @@ ros::Subscriber<articulating_hand::ServoArray> servo_sub("servo_cmd", &servo_cal
 
 void setup() {
   nh.getHardware()->setBaud(BAUD);      // initialize serial communication; baud = 115200
-  
+
   nh.initNode();            // initialize node
 
   nh.subscribe(servo_sub);  // initialize subscriber
@@ -38,9 +38,6 @@ void setup() {
   srvDrvr.begin();
   srvDrvr.setOscillatorFrequency(27000000);
   srvDrvr.setPWMFreq(SERVO_FREQ);
-
-//  pinMode(10, OUTPUT);      // external LED pin/
-//  pinMode(13, OUTPUT);      // onboard LED pin/
 }
 
 void loop() {

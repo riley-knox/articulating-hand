@@ -29,7 +29,6 @@ class Convert(object):
         # initialize publisher
         self.move_joint = rospy.Publisher('joint_states', JointState, queue_size=10)
         # initialize subscribers
-        # FIX TOPIC TYPE AND CALLBACK FUNCTION
         self.servo_command = rospy.Subscriber('servo_cmd', ServoArray, self.create_jointstate)
 
         self.create_init_state()
