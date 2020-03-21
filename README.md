@@ -1,6 +1,6 @@
 # articulating-hand
 
-![Hand Complete](misc/hand_bot.png)
+<img src="misc/hand_bot.png" alt="Hand Complete" width="400"/>
 
 ### Table of Contents
 
