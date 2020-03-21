@@ -1,5 +1,7 @@
 # articulating-hand
 
+![Hand Complete](misc/hand_bot.png)
+
 ### Table of Contents
 
 1. Package Contents
